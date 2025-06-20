@@ -15,6 +15,9 @@ urlpatterns = [
     # path for logout
     path('logout', views.logout_user, name='logout'),
 
+    # path for getting the list of cars (CarMake and CarModel)
+    path('get_cars', views.get_cars, name='getcars'),
+
     # path for dealer reviews view (futuro)
 
     # path for add a review view (futuro)

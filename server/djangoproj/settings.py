@@ -9,13 +9,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
+    '127.0.0.1',
     '8000-theia-gb.guerra.theialabs.cloud',
-    'gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',  # seu domínio real
+    'gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',
+    'gbguerra-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',  # adiciona o host que deu erro
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-theia-gb.guerra.theialabs.cloud',
-    'https://gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',  # mesmo domínio com https
+    'https://gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',
+    'https://gbguerra-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',  # adiciona aqui também
 ]
 
 REST_FRAMEWORK = {
@@ -36,7 +39,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',  # certifique-se que isso está aqui
+    'django.middleware.csrf.CsrfViewMiddleware',  # importante para CSRF
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -64,7 +67,6 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'djangoproj.wsgi.application'
 
 DATABASES = {
@@ -75,18 +77,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -94,9 +88,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 STATIC_URL = '/static/'
@@ -111,4 +103,3 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build'),
     os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
-
