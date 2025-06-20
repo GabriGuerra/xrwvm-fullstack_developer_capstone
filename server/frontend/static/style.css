@@ -1,99 +1,102 @@
-/* Ajuste geral da imagem para a página About Us */
-.about-content img {
-  width: 250px; /* tamanho fixo mais adequado */
-  max-width: 60%;
-  height: auto;
-  border-radius: 50%; /* círculo */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  margin-bottom: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Container principal para about */
-.about-header {
-  text-align: center;
-  margin: 2rem 10%;
-  color: rgb(97, 64, 128);
-}
-
-.about-header h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.about-header p {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  margin: 0.5rem 0;
-  color: #4b2e83;
-}
-
-/* Conteúdo com texto do CEO */
-.about-content {
-  max-width: 600px;
-  margin: 0 auto 3rem;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #2f1b53;
-}
-
-.about-content h2 {
-  font-size: 2rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.2rem;
-  font-weight: 600;
-}
-
-.about-content p {
-  font-size: 1rem;
-  line-height: 1.4;
-  margin: 0.2rem 1rem 1rem 1rem;
-  color: #3c2761;
-}
-
-/* Mantém os estilos já existentes ajustando detalhes */
-.card {
-  border: 3px solid rgb(103, 102, 105);
+.navbar {
+  background-color: darkturquoise; /* conforme você já tinha */
+  padding: 1rem 2rem;
   display: flex;
-  flex-direction: column;
-  margin: 1% 5%;
-  padding: 1rem;
-  border-radius: 12px;
-  background-color: #fafafa;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 1% auto;
-  padding: 20px;
-  flex-wrap: wrap;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
-.details {
-  font-size: 20px;
-  color: rgb(97, 64, 128);
-  padding: 20px;
+/* Faz os links ficarem em linha */
+.navbar-links {
+  display: flex;
+  gap: 1.5rem; /* espaçamento entre links */
 }
 
-.title {
-  font-size: 20px;
-  background-color: rgb(97, 64, 128);
+/* Estilo dos links da navbar */
+.navbar-links .nav-link {
   color: white;
-  text-align: center;
-  margin: 20px;
-  padding: 5px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-/* Outros estilos mantidos conforme você tinha */
+.navbar-links .nav-link:hover {
+  color: #ffcc00;
+}
+
+
+/* Links da navbar */
+.navbar a {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin: 0 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ffcc00;
+}
+
+.navbar-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem;
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+
+/* Garante espaçamento e reset nos itens da navbar */
+.navbar-nav .nav-item {
+  margin: 0;
+}
+
+/* Estilo individual dos links principais */
+.navbar-nav .nav-link {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white !important;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffcc00 !important;
+}
+
+/* Container dos links de autenticação (login/register/logout) */
+#loginlogout {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Estilo comum para todos os links da sessão */
+#loginlogout .homepage_links {
+  font-size: 1.2rem;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#loginlogout .homepage_links:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #ffcc00;
+}
+
+/* Destaque especial para o nome do usuário logado */
+#loginlogout .username {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffd700;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}

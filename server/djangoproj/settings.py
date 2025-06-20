@@ -7,8 +7,16 @@ SECRET_KEY = 'django-insecure-ccow$tz_=9%dxu4(0%^(z%nx32#s@(zt9$ih@)5l54yny)wm-0
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '8000-theia-gb.guerra.theialabs.cloud']
-CSRF_TRUSTED_ORIGINS = ['https://8000-theia-gb.guerra.theialabs.cloud']
+ALLOWED_HOSTS = [
+    'localhost',
+    '8000-theia-gb.guerra.theialabs.cloud',
+    'gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',  # seu domínio real
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-theia-gb.guerra.theialabs.cloud',
+    'https://gbguerra-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai',  # mesmo domínio com https
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
@@ -28,6 +36,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # certifique-se que isso está aqui
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -38,7 +47,11 @@ ROOT_URLCONF = 'djangoproj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/static')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/static'),
+            os.path.join(BASE_DIR, 'frontend/build'),
+            os.path.join(BASE_DIR, 'frontend/build/static'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -50,6 +63,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'djangoproj.wsgi.application'
 
@@ -93,5 +107,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/static')
+    os.path.join(BASE_DIR, 'frontend/static'),
+    os.path.join(BASE_DIR, 'frontend/build'),
+    os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
+
