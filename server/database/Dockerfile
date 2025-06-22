@@ -12,5 +12,5 @@ COPY . .
 RUN npm install
 
 EXPOSE 3030
-
+RUN cat app.js | grep '💥'
 CMD [ "node", "app.js" ]
