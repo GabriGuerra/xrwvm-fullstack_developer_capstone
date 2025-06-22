@@ -1,6 +1,7 @@
 
 import requests
 import os
+import urllib.parse
 from dotenv import load_dotenv
 from django.http import JsonResponse
 
@@ -30,9 +31,9 @@ def get_request(endpoint, **kwargs):
         print("Network exception occurred")
 
 def analyze_review_sentiments(text):
-    request_url = sentiment_analyzer_url+"analyze/"+text
+    encoded_text = urllib.parse.quote(text)
+    request_url = sentiment_analyzer_url + "analyze/" + encoded_text
     try:
-        # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
         return response.json()
     except Exception as err:
@@ -59,3 +60,27 @@ def add_review(request):
             return JsonResponse({"status":401,"message":"Error in posting review"})
     else:
         return JsonResponse({"status":403,"message":"Unauthorized"})
+def get_dealer_reviews(request, dealer_id):
+    try:
+        # Chama a API do backend (Express) para buscar as reviews
+        reviews = get_request(f"/fetchReviews/dealer/{dealer_id}")
+
+        # Adiciona sentimento a cada review
+        enriched_reviews = []
+        if reviews and isinstance(reviews, list):
+            for r in reviews:
+                sentiment = analyze_review_sentiments(r.get("review", ""))
+                enriched_reviews.append({
+                    **r,
+                    "sentiment": sentiment.get("label", "neutral")
+                })
+
+        return JsonResponse({
+            "status": 200,
+            "reviews": enriched_reviews
+        })
+
+    except Exception as e:
+        print(f"Erro em get_dealer_reviews: {e}")
+        return JsonResponse({"status": 500, "message": "Erro ao buscar reviews"})
+
