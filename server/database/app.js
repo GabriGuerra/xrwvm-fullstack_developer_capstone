@@ -16,16 +16,28 @@ mongoose.connect("mongodb://mongo_db:27017/", { dbName: 'dealershipsDB' });
 const Reviews = require('./review');
 const Dealerships = require('./dealership');
 
-try {
-  Reviews.deleteMany({}).then(() => {
-    Reviews.insertMany(reviews_data['reviews']);
-  });
-  Dealerships.deleteMany({}).then(() => {
-    Dealerships.insertMany(dealerships_data['dealerships']);
-  });
-} catch (error) {
-  console.error('Error during DB initialization:', error);
-}
+(async () => {
+  try {
+    const reviewCount = await Reviews.countDocuments();
+    if (reviewCount === 0) {
+      await Reviews.insertMany(reviews_data['reviews']);
+      console.log("Reviews carregados no MongoDB.");
+    } else {
+      console.log("Reviews já existentes. Nenhuma inserção feita.");
+    }
+
+    const dealerCount = await Dealerships.countDocuments();
+    if (dealerCount === 0) {
+      await Dealerships.insertMany(dealerships_data['dealerships']);
+      console.log("Dealers carregados no MongoDB.");
+    } else {
+      console.log("Dealers já existentes. Nenhuma inserção feita.");
+    }
+
+  } catch (error) {
+    console.error('Erro ao inicializar dados do banco:', error);
+  }
+})();
 
 // Home route
 app.get('/', (req, res) => {
@@ -62,14 +74,24 @@ app.get('/fetchDealers', async (req, res) => {
   }
 });
 
-// Fetch dealerships by state
+// Fetch dealerships by state — aqui vai o diagnóstico
 app.get('/fetchDealers/:state', async (req, res) => {
   try {
-    const state = req.params.state.toUpperCase();
-    const documents = await Dealerships.find({ state: state });
+    const stateParam = req.params.state;
+    console.log("Estado recebido:", JSON.stringify(stateParam));
+
+    const documents = await Dealerships.find({
+      $or: [
+        { state: { $regex: new RegExp(`^${stateParam}$`, 'i') } },
+        { st: { $regex: new RegExp(`^${stateParam}$`, 'i') } }
+      ]
+    });
+
+    console.log("Dealers encontrados:", documents.length);
     res.json(documents);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching dealerships by state' });
+    console.error("Erro na rota /fetchDealers/:state:", error);
+    res.status(500).json({ error: 'Erro interno' });
   }
 });
 
@@ -115,7 +137,6 @@ app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
   }
 });
 
-// Start server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

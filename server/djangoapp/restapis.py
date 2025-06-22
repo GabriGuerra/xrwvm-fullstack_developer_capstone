@@ -2,6 +2,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+from django.http import JsonResponse
 
 load_dotenv()
 
@@ -38,15 +39,7 @@ def analyze_review_sentiments(text):
         print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
         
-def analyze_review_sentiments(text):
-    request_url = sentiment_analyzer_url+"analyze/"+text
-    try:
-        # Call get method of requests library with URL and parameters
-        response = requests.get(request_url)
-        return response.json()
-    except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
-        print("Network exception occurred")
+
 
 def post_review(data_dict):
     request_url = backend_url+"/insert_review"

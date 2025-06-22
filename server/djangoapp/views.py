@@ -94,15 +94,26 @@ def get_cars(request):
             "CarMake": car_model.car_make.name
         })
     return JsonResponse({"CarModels": cars})
+def get_dealerships_by_state(request, state):
+    from .restapis import get_request
+    endpoint = f"/fetchDealers/{state}"
+    dealerships = get_request(endpoint)
+    print("Resultado vindo do Express:", dealerships)
+    return JsonResponse(dealerships, safe=False)
+def get_dealerships(request):
+    from .restapis import get_request
+    endpoint = "/fetchDealers"
+    dealerships = get_request(endpoint)
+    return JsonResponse({"dealers": dealerships})
 
 #Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
-def get_dealerships(request, state="All"):
-    if(state == "All"):
-        endpoint = "/fetchDealers"
-    else:
-        endpoint = "/fetchDealers/"+state
-    dealerships = get_request(endpoint)
-    return JsonResponse({"status":200,"dealers":dealerships})
+#def get_dealerships(request, state="All"):
+#    if(state == "All"):
+#        endpoint = "/fetchDealers"
+#    else:
+#        endpoint = "/fetchDealers/"+state
+#    dealerships = get_request(endpoint)
+#    return JsonResponse({"status":200,"dealers":dealerships})
 
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
@@ -125,13 +136,13 @@ def get_dealer_reviews(request, dealer_id):
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
 
-        def add_review(request):
-    if(request.user.is_anonymous == False):
+def add_review(request):
+    if request.user.is_anonymous == False:
         data = json.loads(request.body)
         try:
             response = post_review(data)
-            return JsonResponse({"status":200})
+            return JsonResponse({"status": 200})
         except:
-            return JsonResponse({"status":401,"message":"Error in posting review"})
+            return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
-        return JsonResponse({"status":403,"message":"Unauthorized"})
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
