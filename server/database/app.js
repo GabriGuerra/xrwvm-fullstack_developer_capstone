@@ -79,7 +79,7 @@ app.get('/fetchDealers', async (req, res) => {
   }
 });
 
-// Fetch dealerships by state — aqui vai o diagnóstico
+// Fetch dealerships by state
 app.get('/fetchDealers/:state', async (req, res) => {
   try {
     const stateParam = req.params.state;

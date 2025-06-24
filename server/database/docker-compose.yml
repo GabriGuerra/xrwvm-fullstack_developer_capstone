@@ -1,7 +1,6 @@
 version: '3.9'
 
 services:
-  # Serviço MongoDB
   mongo_db:
     container_name: db_container
     image: mongo:latest
@@ -10,8 +9,9 @@ services:
     restart: always
     volumes:
       - mongo_data:/data/db
+    networks:
+      - app-network
 
-  # Serviço da API Node.js
   api:
     build:
       context: .
@@ -22,6 +22,21 @@ services:
       - 3030:3030
     depends_on:
       - mongo_db
+    networks:
+      - app-network
+
+  sentiment:
+    build:
+      context: ../djangoapp/microservices
+    ports:
+      - 5050:5000
+    container_name: sentiment
+    networks:
+      - app-network
 
 volumes:
   mongo_data: {}
+
+networks:
+  app-network:
+    driver: bridge

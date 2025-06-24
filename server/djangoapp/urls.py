@@ -2,6 +2,10 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
+from django.views.generic import TemplateView
+from django.urls import re_path
+
+
 
 app_name = 'djangoapp'
 
@@ -24,8 +28,14 @@ urlpatterns = [
 
     path(route='dealer/<int:dealer_id>', view=views.get_dealer_details, name='dealer_details'),
 
-    path(route='reviews/dealer/<int:dealer_id>', view=views.get_dealer_reviews, name='dealer_details'),
+    path(route='reviews/dealer/<int:dealer_id>', view=views.get_dealer_reviews, name='dealer_reviews'),
     
     path(route='add_review', view=views.add_review, name='add_review'),
 
+    path('postreview/<int:dealer_id>',TemplateView.as_view(template_name="index.html")),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'^.*$', TemplateView.as_view(template_name="index.html")),
+]
