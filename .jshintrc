@@ -1,0 +1,12 @@
+{
+  "esversion": 11,
+  "node": true,
+  "browser": true,
+  "devel": true,
+  "globals": {
+    "require": true,
+    "module": true,
+    "process": true,
+    "console": true
+  }
+}
