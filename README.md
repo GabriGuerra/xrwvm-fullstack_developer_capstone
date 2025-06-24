@@ -1,33 +1,51 @@
-To do
-- [ ] Testar a rota /fetchDealers com outros estados além de Kansas
-Verificar se a API responde corretamente com diferentes estados para garantir que o filtro funciona como esperado.
-- [ ] Verificar se o front-end está consumindo corretamente a API
-Garantir que o React (ou outro cliente) está fazendo as requisições para a rota correta e recebendo os dados do backend.
-- [ ] Validar integração com o serviço de análise de sentimentos
-Testar se os textos enviados estão sendo analisados corretamente e os resultados estão sendo tratados no app.
-- [ ] Documentar endpoints e exemplos de uso da API
-Criar documentação com exemplos de requisições e respostas da API para facilitar testes e integração com o front.
-- [ ] Criar script para popular o MongoDB com mais dados de dealers
-Facilitar testes automatizados com um seed de dados mais variado.
+# Dealership Review Platform — Capstone Project
 
-In progress
-- [ ] Revisar a estrutura do Dockerfile para incluir apenas os arquivos necessários
-Evitar empacotar arquivos desnecessários e garantir que a imagem final seja leve e eficiente.
-- [ ] Refatorar a API para adicionar tratamento de erro mais detalhado
-Adicionar mensagens claras para status como 404 (nenhum dealer encontrado), 500 (erro interno), etc.
+![Last Commit](https://img.shields.io/github/last-commit/GabriGuerra/xrwvm-fullstack_developer_capstone)
+![Repo Size](https://img.shields.io/github/repo-size/GabriGuerra/xrwvm-fullstack_developer_capstone)
+![License](https://img.shields.io/github/license/GabriGuerra/xrwvm-fullstack_developer_capstone)
 
-Done
-- [x] Inserir logs de requisição no app.js
-Adicionar console.log() para rastrear requisições recebidas e parâmetros usados.
-- [x] Confirmar que o Express não estava rodando o código atualizado
-Verificado via testes e ausência de logs após requisições.
-- [x] Atualizar docker-compose.yml com a seção de build e contexto correto
-Adicionado build.context e dockerfile para forçar o uso do código atualizado da IDE.
-- [x] Reconstruir containers com --no-cache
-Build forçado sem cache antigo para garantir atualização de código no container.
-- [x] Validar rota com curl e navegador
-Testado com múltiplas abordagens para confirmar que a rota responde conforme esperado.
-- [x] Confirmar funcionamento dos logs e rota /fetchDealers/Kansas
-Logs de requisição, estado e resultado visíveis no terminal.
-- [x] Verificar que os recursos da IBM Cloud não foram afetados
-Confirmação de que o analisador de sentimentos e arquivos externos continuam disponíveis.
+Aplicação fullstack para visualização e avaliação de concessionárias de carros, construída como parte do IBM Fullstack Developer Capstone. A solução integra frontend em React, backend Django, microsserviços Node.js, integração com MongoDB e análise de sentimentos  — tudo orquestrado com Docker, Kubernetes e deploy na IBM Cloud.
+
+---
+
+##  Arquitetura
+
+A plataforma é composta por múltiplos serviços:
+
+- **Django Web Application**
+  - Autenticação de usuários
+  - Páginas dinâmicas com templates
+  - Views e models para Car Make e Car Model (SQLite)
+  - Proxy para microsserviços externos e análise de sentimento
+- **Node.js + Express API** (Dockerized)
+  - Banco de dados MongoDB
+  - Endpoints para `fetchDealers`, `fetchReviews`, `insertReview`
+- **Sentiment Analyzer**
+  - Serviço externo hospedado via IBM Code Engine
+  - Retorna sentimento `positive`, `neutral` ou `negative` baseado em texto
+- **Frontend SPA**
+  - React JS para autenticação de usuários e experiência interativa
+
+---
+
+##  Tecnologias Utilizadas
+
+- **Linguagens & Frameworks:**
+  - Python 3.12, Django 4.x, Node.js (Express)
+  - React.js (SPA)
+- **Banco de dados:**
+  - MongoDB (para reviews e dealers)
+  - SQLite (para carros)
+- **Integração e Deploy:**
+  - IBM Cloud Code Engine
+  - IBM Cloud Container Registry (ICR)
+  - Docker & Kubernetes
+  - Gunicorn + Docker entrypoint scripts
+- **Qualidade e CI/CD:**
+  - pre-commit hooks (`black`, `flake8`, `autoflake`, `jshint`)
+  - GitHub Actions (CI pipelines)
+- **Outros:**
+  - IBM Cloud CLI
+  - JSON parsing com Node.js
+  - Regex search no MongoDB
+  - Templates Django + consumo de APIs REST
