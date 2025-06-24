@@ -1,14 +1,18 @@
 import requests
 import os
-import urllib.parse
+import json
 from dotenv import load_dotenv
 from django.http import JsonResponse
 
 load_dotenv()
 
-backend_url = os.getenv('backend_url', default="http://localhost:3030")
-sentiment_analyzer_url = os.getenv('sentiment_analyzer_url', default="http://localhost:5050/")
+backend_url = os.getenv("backend_url", default="http://localhost:3030")
+sentiment_analyzer_url = os.getenv(
+    "sentiment_analyzer_url", default="http://localhost:5050/"
+)
 print("URL usada para análise:", sentiment_analyzer_url)
+
+
 def get_request(endpoint, **kwargs):
     params = ""
     if kwargs:
@@ -27,8 +31,10 @@ def get_request(endpoint, **kwargs):
         print(f"Network exception occurred: {e}")
         return None
 
+
 def analyze_review_sentiments(text):
     import urllib.parse
+
     encoded_text = urllib.parse.quote(text)
     request_url = sentiment_analyzer_url + "analyze/" + encoded_text
     print(f"🔍 Testando URL: {request_url}")
@@ -41,6 +47,7 @@ def analyze_review_sentiments(text):
         print(" Erro na requisição:", err)
         return {"label": "neutral"}
 
+
 def post_review(data_dict):
     request_url = backend_url + "/insert_review"
     try:
@@ -51,17 +58,19 @@ def post_review(data_dict):
         print(f"Post review error: {e}")
         return {"status": 500, "message": "Erro ao enviar review"}
 
+
 def add_review(request):
     if not request.user.is_anonymous:
         try:
             data = json.loads(request.body)
-            response = post_review(data)
+            post_review(data)
             return JsonResponse({"status": 200})
         except Exception as e:
             print(f"Erro ao postar review: {e}")
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
+
 
 def get_dealer_reviews(request, dealer_id):
     if not dealer_id:
@@ -80,15 +89,11 @@ def get_dealer_reviews(request, dealer_id):
         for r in reviews:
             print("🎯 Analisando review:", r.get("review", ""))
             sentiment = analyze_review_sentiments(r.get("review", ""))
-            enriched_reviews.append({
-                **r,
-                "sentiment": sentiment.get("label", "neutral")
-            })
+            enriched_reviews.append(
+                {**r, "sentiment": sentiment.get("label", "neutral")}
+            )
 
-        return JsonResponse({
-            "status": 200,
-            "reviews": enriched_reviews
-        })
+        return JsonResponse({"status": 200, "reviews": enriched_reviews})
 
     except Exception as e:
         print(f"❌ Erro em get_dealer_reviews: {e}")
